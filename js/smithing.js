@@ -176,10 +176,10 @@ window.Smithing = {
     updateSmelting: function() {
         if(!this.isSmelting) return;
 
-        // Temperature cools down
+        // Temperature cools down, slowed down by 50%
         // Higher tier smelter reduces cooldown rate
-        const coolRate = 0.5 - (State.upgrades.smelter * 0.05);
-        this.smeltTemp -= Math.max(0.2, coolRate);
+        const coolRate = 0.25 - (State.upgrades.smelter * 0.025);
+        this.smeltTemp -= Math.max(0.1, coolRate);
         if(this.smeltTemp < 0) this.smeltTemp = 0;
 
         const indicator = document.getElementById('smelt-indicator');
@@ -187,7 +187,7 @@ window.Smithing = {
 
         // Sweet spot is 40% to 60%
         if(this.smeltTemp >= 40 && this.smeltTemp <= 60) {
-            this.smeltProgress += 0.5;
+            this.smeltProgress += 1.0; // Fills up twice as fast when in sweet spot
             indicator.style.backgroundColor = 'var(--success)';
         } else {
             indicator.style.backgroundColor = 'var(--danger)';
@@ -307,9 +307,9 @@ window.Smithing = {
         const anvil = document.getElementById('forge-anvil');
         if(!anvil) return;
 
-        // Speed modified by anvil upgrade
-        const speed = 3 - (State.upgrades.anvil * 0.2);
-        this.forgePos += Math.max(1, speed) * this.forgeDirection;
+        // Speed modified by anvil upgrade, base speed halved
+        const speed = 1.5 - (State.upgrades.anvil * 0.1);
+        this.forgePos += Math.max(0.5, speed) * this.forgeDirection;
 
         if (this.forgePos >= 90) {
             this.forgePos = 90;

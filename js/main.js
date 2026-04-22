@@ -39,6 +39,12 @@ function initNavigation() {
             // Trigger specific view logic if needed
             if(targetId === 'view-inventory' && window.State) {
                 State.renderInventoryView();
+            } else if (targetId === 'view-smith' && window.Smithing) {
+                Smithing.renderView();
+            } else if (targetId === 'view-mine' && window.Mining) {
+                Mining.renderMiningView();
+            } else if (targetId === 'view-shop' && window.Shop) {
+                Shop.renderView();
             }
         });
     });

@@ -8,7 +8,7 @@ window.Mining = {
     direction: 1, // 1 for right, -1 for left
     weakPointStart: 0,
     weakPointEnd: 0,
-    baseSpeed: 2,
+    baseSpeed: 1, // Slower base speed (was 2)
     isPlaying: false,
 
     init: function() {
@@ -139,8 +139,8 @@ window.Mining = {
         const crosshair = document.getElementById('crosshair');
         if(!crosshair) return;
 
-        // Speed increases slightly with combo
-        const speed = this.baseSpeed + (this.combo * 0.2);
+        // Speed increases slightly with combo, but less punishing
+        const speed = this.baseSpeed + (this.combo * 0.1);
 
         this.crosshairPos += speed * this.direction;
 
