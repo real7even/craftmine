@@ -68,7 +68,21 @@ window.Mining = {
         this.crosshairPos = 0;
         this.direction = 1;
 
-        document.getElementById('strike-btn').addEventListener('click', () => this.strike());
+        // Setup click/touch listener on the entire modal to support mobile tapping
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+
+        if(this._clickHandler) {
+            modalContent.removeEventListener('click', this._clickHandler);
+        }
+
+        this._clickHandler = (e) => {
+            // Prevent triggering if they clicked the close button
+            if(e.target.id === 'close-minigame') return;
+            if(this.isPlaying) {
+                this.strike();
+            }
+        };
+        modalContent.addEventListener('click', this._clickHandler);
 
         // Setup keyboard listener (remove existing if any to prevent duplicates)
         if(this._keydownHandler) {
@@ -90,6 +104,10 @@ window.Mining = {
         this.isPlaying = false;
         cancelAnimationFrame(this.gameLoop);
         document.removeEventListener('keydown', this._keydownHandler);
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+        if(modalContent && this._clickHandler) {
+            modalContent.removeEventListener('click', this._clickHandler);
+        }
 
         document.getElementById('minigame-modal').classList.add('hidden');
         document.getElementById('close-minigame').classList.add('hidden');

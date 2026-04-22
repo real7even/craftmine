@@ -141,7 +141,16 @@ window.Smithing = {
             <button class="btn" id="bellows-btn" style="margin-top: 20px; width: 100%; padding: 20px; font-size: 1.2rem;">Use Bellows (Space)</button>
         `;
 
-        document.getElementById('bellows-btn').addEventListener('click', () => this.pumpBellows());
+        // Mobile Support: Tap anywhere on modal content
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+        if(this._smeltClickHandler) {
+            modalContent.removeEventListener('click', this._smeltClickHandler);
+        }
+        this._smeltClickHandler = (e) => {
+            if(e.target.id === 'close-minigame') return;
+            if(this.isSmelting) this.pumpBellows();
+        };
+        modalContent.addEventListener('click', this._smeltClickHandler);
 
         if(this._smeltKeyHandler) {
             document.removeEventListener('keydown', this._smeltKeyHandler);
@@ -199,6 +208,10 @@ window.Smithing = {
         this.isSmelting = false;
         cancelAnimationFrame(this.smeltLoop);
         document.removeEventListener('keydown', this._smeltKeyHandler);
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+        if(modalContent && this._smeltClickHandler) {
+            modalContent.removeEventListener('click', this._smeltClickHandler);
+        }
 
         document.getElementById('minigame-modal').classList.add('hidden');
         document.getElementById('close-minigame').classList.add('hidden');
@@ -208,6 +221,10 @@ window.Smithing = {
         this.isSmelting = false;
         cancelAnimationFrame(this.smeltLoop);
         document.removeEventListener('keydown', this._smeltKeyHandler);
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+        if(modalContent && this._smeltClickHandler) {
+            modalContent.removeEventListener('click', this._smeltClickHandler);
+        }
 
         State.ores[this.activeOre] -= 3; // Deduct cost on success
         State.updateUI();
@@ -258,7 +275,16 @@ window.Smithing = {
         this.forgePos = 0;
         this.forgeDirection = 1;
 
-        document.getElementById('hammer-btn').addEventListener('click', () => this.strikeForge());
+        // Mobile Support: Tap anywhere on modal content
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+        if(this._forgeClickHandler) {
+            modalContent.removeEventListener('click', this._forgeClickHandler);
+        }
+        this._forgeClickHandler = (e) => {
+            if(e.target.id === 'close-minigame') return;
+            if(this.isForging) this.strikeForge();
+        };
+        modalContent.addEventListener('click', this._forgeClickHandler);
 
         if(this._forgeKeyHandler) {
             document.removeEventListener('keydown', this._forgeKeyHandler);
@@ -331,6 +357,10 @@ window.Smithing = {
         this.isForging = false;
         cancelAnimationFrame(this.forgeLoop);
         document.removeEventListener('keydown', this._forgeKeyHandler);
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+        if(modalContent && this._forgeClickHandler) {
+            modalContent.removeEventListener('click', this._forgeClickHandler);
+        }
 
         document.getElementById('minigame-modal').classList.add('hidden');
         document.getElementById('close-minigame').classList.add('hidden');
@@ -340,6 +370,10 @@ window.Smithing = {
         this.isForging = false;
         cancelAnimationFrame(this.forgeLoop);
         document.removeEventListener('keydown', this._forgeKeyHandler);
+        const modalContent = document.querySelector('#minigame-modal .modal-content');
+        if(modalContent && this._forgeClickHandler) {
+            modalContent.removeEventListener('click', this._forgeClickHandler);
+        }
 
         if(success) {
             State.bars[this.activeBar] -= this.activeRecipe.cost; // Deduct cost on success
