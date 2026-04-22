@@ -111,9 +111,6 @@ window.Smithing = {
     startSmelting: function(oreKey) {
         if(State.ores[oreKey] < 3) return;
 
-        State.ores[oreKey] -= 3;
-        State.updateUI();
-
         this.activeOre = oreKey;
         this.isSmelting = true;
         this.smeltTemp = 0;
@@ -124,7 +121,8 @@ window.Smithing = {
         const closeBtn = document.getElementById('close-minigame');
 
         modal.classList.remove('hidden');
-        closeBtn.classList.add('hidden'); // Force completion or fail (could add cancel, but let's keep it simple)
+        closeBtn.classList.remove('hidden');
+        closeBtn.onclick = () => this.cancelSmelting();
 
         mgContainer.innerHTML = `
             <h3>Smelting ${State.materials[oreKey].name}</h3>
@@ -144,6 +142,10 @@ window.Smithing = {
         `;
 
         document.getElementById('bellows-btn').addEventListener('click', () => this.pumpBellows());
+
+        if(this._smeltKeyHandler) {
+            document.removeEventListener('keydown', this._smeltKeyHandler);
+        }
 
         this._smeltKeyHandler = (e) => {
             if(e.code === 'Space' && this.isSmelting) {
@@ -193,10 +195,22 @@ window.Smithing = {
         this.smeltLoop = requestAnimationFrame(this.updateSmelting.bind(this));
     },
 
+    cancelSmelting: function() {
+        this.isSmelting = false;
+        cancelAnimationFrame(this.smeltLoop);
+        document.removeEventListener('keydown', this._smeltKeyHandler);
+
+        document.getElementById('minigame-modal').classList.add('hidden');
+        document.getElementById('close-minigame').classList.add('hidden');
+    },
+
     completeSmelting: function() {
         this.isSmelting = false;
         cancelAnimationFrame(this.smeltLoop);
         document.removeEventListener('keydown', this._smeltKeyHandler);
+
+        State.ores[this.activeOre] -= 3; // Deduct cost on success
+        State.updateUI();
 
         State.addBar(this.activeOre, 1);
         Utils.spawnFloatingText('+1 ' + State.materials[this.activeOre].name + ' Bar', 'var(--accent)');
@@ -212,11 +226,8 @@ window.Smithing = {
     startForging: function(barKey, recipeId, recipeName, type, cost) {
         if(State.bars[barKey] < cost) return;
 
-        State.bars[barKey] -= cost;
-        State.updateUI();
-
         this.activeBar = barKey;
-        this.activeRecipe = { id: recipeId, name: recipeName, type: type };
+        this.activeRecipe = { id: recipeId, name: recipeName, type: type, cost: cost };
         this.isForging = true;
         this.forgeHits = 0;
         this.forgeProgress = 0;
@@ -227,7 +238,8 @@ window.Smithing = {
         const closeBtn = document.getElementById('close-minigame');
 
         modal.classList.remove('hidden');
-        closeBtn.classList.add('hidden');
+        closeBtn.classList.remove('hidden');
+        closeBtn.onclick = () => this.cancelForging();
 
         mgContainer.innerHTML = `
             <h3>Forging ${State.materials[barKey].name} ${recipeName}</h3>
@@ -247,6 +259,10 @@ window.Smithing = {
         this.forgeDirection = 1;
 
         document.getElementById('hammer-btn').addEventListener('click', () => this.strikeForge());
+
+        if(this._forgeKeyHandler) {
+            document.removeEventListener('keydown', this._forgeKeyHandler);
+        }
 
         this._forgeKeyHandler = (e) => {
             if(e.code === 'Space' && this.isForging) {
@@ -311,10 +327,24 @@ window.Smithing = {
         }
     },
 
+    cancelForging: function() {
+        this.isForging = false;
+        cancelAnimationFrame(this.forgeLoop);
+        document.removeEventListener('keydown', this._forgeKeyHandler);
+
+        document.getElementById('minigame-modal').classList.add('hidden');
+        document.getElementById('close-minigame').classList.add('hidden');
+    },
+
     completeForging: function(success) {
         this.isForging = false;
         cancelAnimationFrame(this.forgeLoop);
         document.removeEventListener('keydown', this._forgeKeyHandler);
+
+        if(success) {
+            State.bars[this.activeBar] -= this.activeRecipe.cost; // Deduct cost on success
+            State.updateUI();
+        }
 
         const mat = State.materials[this.activeBar];
 

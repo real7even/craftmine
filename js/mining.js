@@ -70,7 +70,11 @@ window.Mining = {
 
         document.getElementById('strike-btn').addEventListener('click', () => this.strike());
 
-        // Setup keyboard listener
+        // Setup keyboard listener (remove existing if any to prevent duplicates)
+        if(this._keydownHandler) {
+            document.removeEventListener('keydown', this._keydownHandler);
+        }
+
         this._keydownHandler = (e) => {
             if(e.code === 'Space' && this.isPlaying) {
                 e.preventDefault();

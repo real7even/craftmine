@@ -203,13 +203,35 @@ window.Combat = {
         this.inCombat = false;
 
         setTimeout(() => {
+            const modal = document.getElementById('minigame-modal');
+            const mgContainer = document.getElementById('minigame-container');
+            const closeBtn = document.getElementById('close-minigame');
+
+            modal.classList.remove('hidden');
+            closeBtn.classList.remove('hidden');
+
             if(playerWon) {
-                alert(`Victory! You defeated the ${this.currentStage.enemy.name} and earned 🪙 ${this.currentStage.enemy.reward}!`);
                 State.addGold(this.currentStage.enemy.reward);
+                mgContainer.innerHTML = `
+                    <h2 style="color: var(--success); font-size: 2.5rem; margin-bottom: 20px;">Victory! 🏆</h2>
+                    <p style="font-size: 1.2rem;">You defeated the <strong>${this.currentStage.enemy.name}</strong>!</p>
+                    <p style="font-size: 1.5rem; color: var(--accent); margin-top: 20px;">Reward: 🪙 ${this.currentStage.enemy.reward}</p>
+                `;
             } else {
-                alert(`Defeat! The ${this.currentStage.enemy.name} knocked you out. You fled to safety, but lost the adventure fee.`);
+                mgContainer.innerHTML = `
+                    <h2 style="color: var(--danger); font-size: 2.5rem; margin-bottom: 20px;">Defeat 💀</h2>
+                    <p style="font-size: 1.2rem;">The <strong>${this.currentStage.enemy.name}</strong> knocked you out.</p>
+                    <p style="margin-top: 20px; color: var(--text-muted);">You fled to safety, but lost the adventure fee.</p>
+                `;
             }
-            this.renderStageSelect();
+
+            closeBtn.innerText = "Return to Map";
+            closeBtn.onclick = () => {
+                modal.classList.add('hidden');
+                closeBtn.innerText = "Leave"; // Reset for other uses
+                this.renderStageSelect();
+            };
+
         }, 500);
     }
 };
