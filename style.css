@@ -1,0 +1,398 @@
+:root {
+    --bg-dark: #1a1a24;
+    --bg-panel: #2a2a35;
+    --bg-panel-light: #383847;
+    --text-main: #e0e0e0;
+    --text-muted: #a0a0b0;
+    --accent: #d4af37; /* Gold */
+    --accent-hover: #f3c746;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden; /* App-like feel */
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--accent);
+}
+
+button {
+    cursor: pointer;
+    font-family: var(--font-body);
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn {
+    padding: 8px 16px;
+    background-color: var(--bg-panel-light);
+    color: var(--text-main);
+    font-weight: bold;
+    border: 1px solid var(--accent);
+}
+
+.btn:hover {
+    background-color: var(--accent);
+    color: var(--bg-dark);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: var(--text-muted);
+}
+
+/* Layout */
+#game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#top-bar {
+    height: 60px;
+    background-color: var(--bg-panel);
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+}
+
+.resource {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+#sidebar {
+    width: 200px;
+    background-color: var(--bg-panel);
+    border-right: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.nav-btn {
+    padding: 15px 20px;
+    text-align: left;
+    background: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    border-left: 4px solid transparent;
+}
+
+.nav-btn:hover {
+    background-color: var(--bg-panel-light);
+    color: var(--text-main);
+}
+
+.nav-btn.active {
+    background-color: var(--bg-panel-light);
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+
+#views-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.view {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.view.active {
+    display: block;
+}
+
+.view h2 {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-panel);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 30px;
+    min-width: 400px;
+    min-height: 300px;
+    text-align: center;
+    position: relative;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#fx-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+}
+/* Mini-games Styles */
+.material-selector {
+    margin-top: 20px;
+}
+.vein-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+.vein-btn {
+    padding: 15px 25px;
+    border-width: 2px;
+    font-size: 1.1rem;
+}
+.vein-btn.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: var(--text-muted) !important;
+}
+
+#combo-meter {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.mining-bar-container {
+    width: 100%;
+    height: 40px;
+    background-color: var(--bg-dark);
+    border: 2px solid var(--text-muted);
+    border-radius: 20px;
+    position: relative;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.weak-point {
+    height: 100%;
+    background-color: var(--accent);
+    position: absolute;
+    opacity: 0.7;
+    border-radius: 5px;
+}
+
+.crosshair {
+    width: 6px;
+    height: 120%;
+    background-color: #fff;
+    position: absolute;
+    top: -10%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px #fff;
+}
+
+/* Smithing Styles */
+.smithing-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.smith-tab-btn {
+    padding: 10px 20px;
+    background: var(--bg-panel-light);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-family: var(--font-heading);
+}
+.smith-tab-btn.active {
+    background: var(--accent);
+    color: var(--bg-dark);
+}
+
+.smelt-gauge-container {
+    width: 50px;
+    height: 200px;
+    background: #333;
+    border: 2px solid var(--accent);
+    margin: 0 auto;
+    position: relative;
+    border-radius: 5px;
+}
+.smelt-target-zone {
+    position: absolute;
+    bottom: 40%;
+    height: 20%;
+    width: 100%;
+    background: rgba(46, 204, 113, 0.4);
+    border-top: 2px dashed var(--success);
+    border-bottom: 2px dashed var(--success);
+}
+.smelt-indicator {
+    position: absolute;
+    bottom: 0%;
+    left: 10%;
+    width: 80%;
+    height: 5px;
+    background: #fff;
+    transition: bottom 0.1s linear;
+    box-shadow: 0 0 10px #fff;
+}
+
+.forge-target {
+    position: absolute;
+    left: 40%;
+    width: 10%;
+    height: 100%;
+    background: rgba(46, 204, 113, 0.4);
+    border-left: 2px dashed var(--success);
+    border-right: 2px dashed var(--success);
+}
+.forge-anvil {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    pointer-events: none;
+}
+
+/* Shop Styles */
+.upgrade-item {
+    background: var(--bg-panel-light);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border-left: 4px solid var(--accent);
+}
+.upgrade-item h4 {
+    margin-bottom: 5px;
+}
+.upgrade-item button {
+    margin-top: 10px;
+}
+
+.sell-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-panel-light);
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* Visual Polish and Effects */
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-panel);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+/* Enhancing Buttons */
+.btn {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+.btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Animations */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 1s infinite;
+}
+
+/* Specific UI Enhancements */
+.vein-btn {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.vein-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+.stage-card {
+    transition: border-left-width 0.2s;
+}
+.stage-card:hover {
+    border-left-width: 8px;
+}
+
+/* Resource Bar Polish */
+#top-bar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    z-index: 10;
+}

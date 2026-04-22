@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Crafter RPG</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Top Bar: Resources -->
+        <header id="top-bar">
+            <div class="resource">
+                <span class="icon">🪙</span>
+                <span id="gold-display">0</span> Gold
+            </div>
+            <div class="resource-breakdown" id="inventory-summary">
+                <!-- Brief inventory summary injected here -->
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main>
+            <!-- Sidebar Navigation -->
+            <nav id="sidebar">
+                <button class="nav-btn active" data-target="view-mine">⛏️ Mine</button>
+                <button class="nav-btn" data-target="view-smith">⚒️ Smith</button>
+                <button class="nav-btn" data-target="view-shop">🏪 Shop</button>
+                <button class="nav-btn" data-target="view-adventure">⚔️ Adventure</button>
+                <button class="nav-btn" data-target="view-inventory">🎒 Inventory & Stats</button>
+            </nav>
+
+            <!-- Views Container -->
+            <div id="views-container">
+                <!-- Mining View -->
+                <section id="view-mine" class="view active">
+                    <h2>Mining</h2>
+                    <div id="mining-area">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Smithing View -->
+                <section id="view-smith" class="view hidden">
+                    <h2>Smithing</h2>
+                    <div class="smithing-tabs">
+                        <button class="smith-tab-btn active" data-sub="smelt">Smelt Ores</button>
+                        <button class="smith-tab-btn" data-sub="forge">Forge Gear</button>
+                    </div>
+                    <div id="smithing-area">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Shop View -->
+                <section id="view-shop" class="view hidden">
+                    <h2>Shop & Upgrades</h2>
+                    <div id="shop-area">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Adventure View -->
+                <section id="view-adventure" class="view hidden">
+                    <h2>Adventure</h2>
+                    <div id="adventure-area">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Inventory View -->
+                <section id="view-inventory" class="view hidden">
+                    <h2>Inventory & Character Stats</h2>
+                    <div id="inventory-area">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Modal for Mini-games (Pop-ups) -->
+        <div id="minigame-modal" class="modal hidden">
+            <div class="modal-content">
+                <div id="minigame-container"></div>
+                <button id="close-minigame" class="btn hidden">Leave</button>
+            </div>
+        </div>
+
+        <!-- Notifications / Particle effects container -->
+        <div id="fx-container"></div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/mining.js"></script>
+    <script src="js/smithing.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/combat.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
